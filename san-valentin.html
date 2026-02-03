@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>¿Serás mi San Valentín? 💕</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Quicksand:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --rosa-claro: #ffd6e0;
+        --rosa: #ff9ebb;
+        --rosa-fuerte: #ff6b9d;
+        --rosa-oscuro: #e84393;
+        --blanco: #fff5f8;
+        --sombra: rgba(232, 67, 147, 0.25);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Quicksand", sans-serif;
+        min-height: 100vh;
+        background: linear-gradient(
+          135deg,
+          #ffeef3 0%,
+          #ffd6e0 30%,
+          #ffb3d0 60%,
+          #ff9ebb 100%
+        );
+        background-attachment: fixed;
+        overflow-x: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+        position: relative;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: radial-gradient(
+            circle at 20% 80%,
+            rgba(255, 182, 193, 0.4) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 80% 20%,
+            rgba(255, 105, 180, 0.3) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 40% 40%,
+            rgba(255, 182, 193, 0.2) 0%,
+            transparent 40%
+          );
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .contenedor {
+        position: relative;
+        z-index: 1;
+        max-width: 520px;
+        width: 100%;
+        text-align: center;
+      }
+
+      .corazon-flotante {
+        font-size: 2rem;
+        animation: flotar 3s ease-in-out infinite;
+        opacity: 0.8;
+      }
+
+      .corazon-flotante:nth-child(1) {
+        animation-delay: 0s;
+      }
+      .corazon-flotante:nth-child(2) {
+        animation-delay: 0.5s;
+      }
+      .corazon-flotante:nth-child(3) {
+        animation-delay: 1s;
+      }
+
+      @keyframes flotar {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      h1 {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(1.75rem, 5vw, 2.5rem);
+        color: var(--rosa-oscuro);
+        margin: 1rem 0 0.5rem;
+        text-shadow: 0 2px 4px var(--sombra);
+        line-height: 1.3;
+      }
+
+      .subtitulo {
+        font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+        color: var(--rosa-fuerte);
+        margin-bottom: 2rem;
+        font-weight: 500;
+      }
+
+      .pregunta {
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(10px);
+        border-radius: 24px;
+        padding: 2rem;
+        box-shadow: 0 8px 32px var(--sombra), 0 0 0 1px rgba(255, 255, 255, 0.5);
+        margin-bottom: 2rem;
+      }
+
+      .pregunta-texto {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(1.4rem, 4vw, 1.8rem);
+        color: var(--rosa-oscuro);
+        margin-bottom: 1.5rem;
+        font-weight: 600;
+      }
+
+      .botones {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        font-family: "Quicksand", sans-serif;
+        font-size: clamp(1rem, 3vw, 1.2rem);
+        font-weight: 600;
+        padding: 0.9rem 2rem;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+        min-width: 120px;
+      }
+
+      .btn:active {
+        transform: scale(0.98);
+      }
+
+      .btn-si {
+        background: linear-gradient(
+          135deg,
+          var(--rosa-fuerte),
+          var(--rosa-oscuro)
+        );
+        color: white;
+        box-shadow: 0 4px 15px var(--sombra);
+      }
+
+      .btn-si:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px var(--sombra);
+      }
+
+      .btn-no {
+        background: white;
+        color: var(--rosa-oscuro);
+        border: 2px solid var(--rosa);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      }
+
+      .btn-no:hover {
+        transform: scale(1.02);
+        box-shadow: 0 6px 20px var(--sombra);
+      }
+
+      /* Modal / mensaje cuando dice NO */
+      .overlay-no {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(6px);
+        z-index: 100;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        animation: fadeIn 0.3s ease;
+      }
+
+      .overlay-no.visible {
+        display: flex;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      .modal-no {
+        background: white;
+        border-radius: 24px;
+        padding: 1.5rem;
+        max-width: 380px;
+        width: 100%;
+        box-shadow: 0 20px 60px rgba(232, 67, 147, 0.35);
+        animation: scaleIn 0.35s ease;
+        border: 2px solid var(--rosa-claro);
+      }
+
+      @keyframes scaleIn {
+        from {
+          opacity: 0;
+          transform: scale(0.9);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .modal-no .mensaje-no {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(1.2rem, 3.5vw, 1.4rem);
+        color: var(--rosa-oscuro);
+        margin-bottom: 1rem;
+        font-weight: 600;
+      }
+
+      .modal-no .img-no {
+        width: 100%;
+        height: auto;
+        max-height: 50vh;
+        object-fit: contain;
+        border-radius: 16px;
+        margin-bottom: 1rem;
+        border: 3px solid var(--rosa-claro);
+      }
+
+      .modal-no .btn-cerrar {
+        font-family: "Quicksand", sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        padding: 0.6rem 1.5rem;
+        background: var(--rosa);
+        color: white;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: transform 0.2s, background 0.2s;
+      }
+
+      .modal-no .btn-cerrar:hover {
+        background: var(--rosa-oscuro);
+        transform: scale(1.03);
+      }
+
+      /* Pantalla de SÍ */
+      .pantalla-si {
+        display: none;
+        text-align: center;
+        animation: fadeIn 0.6s ease;
+      }
+
+      .pantalla-si.visible {
+        display: block;
+      }
+
+      .pantalla-si .corazon-grande {
+        font-size: 4rem;
+        animation: latir 0.8s ease infinite;
+        margin-bottom: 1rem;
+      }
+
+      @keyframes latir {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.15);
+        }
+      }
+
+      .pantalla-si h2 {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(1.6rem, 4.5vw, 2.2rem);
+        color: var(--rosa-oscuro);
+        margin-bottom: 0.5rem;
+      }
+
+      .pantalla-si p {
+        font-size: clamp(1rem, 2.5vw, 1.15rem);
+        color: var(--rosa-fuerte);
+        margin-bottom: 2rem;
+      }
+
+      .pantalla-si .gif-zelda {
+        width: 100%;
+        max-width: 320px;
+        height: auto;
+        object-fit: contain;
+        border-radius: 16px;
+        margin-bottom: 1rem;
+        border: 3px solid var(--rosa-claro);
+      }
+
+      .pantalla-si .img-couple {
+        width: 100%;
+        max-width: 360px;
+        height: auto;
+        object-fit: contain;
+        border-radius: 16px;
+        margin-top: 0.5rem;
+        border: 3px solid var(--rosa-claro);
+      }
+
+      .ocultar {
+        display: none !important;
+      }
+
+      @media (max-width: 480px) {
+        .pregunta {
+          padding: 1.5rem 1rem;
+        }
+
+        .botones {
+          flex-direction: column;
+        }
+
+        .btn {
+          width: 100%;
+          min-width: unset;
+        }
+
+        .modal-no .img-no {
+          max-height: 45vh;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="contenedor">
+      <div class="corazones">
+        <span class="corazon-flotante">💕</span>
+        <span class="corazon-flotante">💗</span>
+        <span class="corazon-flotante">💖</span>
+      </div>
+
+      <h1>Para Gabriela, el amor de mi vida 💖</h1>
+      <p class="subtitulo">San Valentín 2026</p>
+
+      <div id="pregunta-inicial" class="pregunta">
+        <p class="pregunta-texto">¿Quieres ser mi San Valentín? 💝</p>
+        <div class="botones">
+          <button type="button" class="btn btn-si" id="btnSi">¡Sí! 💕</button>
+          <button type="button" class="btn btn-no" id="btnNo">No</button>
+        </div>
+      </div>
+
+      <div id="pantalla-si" class="pantalla-si">
+        <img src="link-zelda.gif" alt="Link Zelda" class="gif-zelda" />
+        <div class="corazon-grande">💕</div>
+        <h2>¡Gracias por decir que sí!</h2>
+        <p>Eres lo mejor de mi vida. Feliz San Valentín, mi reina.</p>
+        <img src="couple.jfif" alt="Pareja" class="img-couple" />
+      </div>
+    </div>
+
+    <div id="overlay-no" class="overlay-no">
+      <div class="modal-no">
+        <p class="mensaje-no">¿Por qué dices que no? 😢</p>
+        <img id="img-random-no" class="img-no" src="" alt="Mirada triste" />
+        <button type="button" class="btn-cerrar" id="btnCerrarNo">
+          Volver
+        </button>
+      </div>
+    </div>
+
+    <script>
+      const imagenesNo = [
+        "dog_1.jpeg",
+        "dog_2.jpeg",
+        "dog_3.jpeg",
+        "dog_4.jpeg",
+        "dog_5.jpeg",
+        "dog_6.jpeg",
+      ];
+
+      const btnNo = document.getElementById("btnNo");
+      const btnSi = document.getElementById("btnSi");
+      const overlayNo = document.getElementById("overlay-no");
+      const imgRandomNo = document.getElementById("img-random-no");
+      const btnCerrarNo = document.getElementById("btnCerrarNo");
+      const preguntaInicial = document.getElementById("pregunta-inicial");
+      const pantallaSi = document.getElementById("pantalla-si");
+
+      function imagenAleatoria() {
+        const i = Math.floor(Math.random() * imagenesNo.length);
+        return imagenesNo[i];
+      }
+
+      btnNo.addEventListener("click", function () {
+        imgRandomNo.src = imagenAleatoria();
+        overlayNo.classList.add("visible");
+      });
+
+      btnCerrarNo.addEventListener("click", function () {
+        overlayNo.classList.remove("visible");
+      });
+
+      overlayNo.addEventListener("click", function (e) {
+        if (e.target === overlayNo) {
+          overlayNo.classList.remove("visible");
+        }
+      });
+
+      btnSi.addEventListener("click", function () {
+        preguntaInicial.classList.add("ocultar");
+        pantallaSi.classList.add("visible");
+      });
+    </script>
+  </body>
+</html>
